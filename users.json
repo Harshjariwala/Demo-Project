@@ -1,0 +1,42 @@
+[
+    {
+        "id": 0,
+        "first_name": "Harsh",
+        "last_name": "Jariwala",
+        "address": "Wadi faliya",
+        "zip_code": 395001,
+        "phone_no": 9016736341
+    },
+    {
+        "id": 1,
+        "first_name": "Yash",
+        "last_name": "Jain",
+        "address": "abc",
+        "zip_code": 395002,
+        "phone_no": 1234567890
+    },
+    {
+        "id": 2,
+        "first_name": "Abhay",
+        "last_name": "Darji",
+        "address": "xyz",
+        "zip_code": 395003,
+        "phone_no": 3698745210
+    },
+    {
+        "id": 3,
+        "first_name": "Jaimit",
+        "last_name": "Gandhi",
+        "address": "mno",
+        "zip_code": 395004,
+        "phone_no": 7536984120
+    },
+    {
+        "id": 4,
+        "first_name": "Preet",
+        "last_name": "Solanki",
+        "address": "ghi",
+        "zip_code": 395005,
+        "phone_no": 1598746320
+    }
+]

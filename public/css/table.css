@@ -1,0 +1,23 @@
+thead tr{
+    background-color: beige;
+    height: 40px;
+}
+
+tr:nth-child(even)
+{
+    background-color: beige;
+}
+
+.add-sec{
+    margin-top:50px;
+}
+
+.add-sec a{
+    background: green;
+    color: #fff;
+    width: 100px;
+}
+
+.add-sec a:hover{
+    color: #fff;
+}

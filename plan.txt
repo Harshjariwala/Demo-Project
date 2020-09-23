@@ -1,0 +1,129 @@
+var express = require('express');
+var app = express();
+const path=require("path");
+const ejs=require("ejs");
+var multer  = require('multer');
+var fs = require('fs');
+var url = require('url');
+var uniqid = require('uniqid');
+
+var bodyParser = require('body-parser');
+const { request } = require('http');
+var urlencodedParser = bodyParser.urlencoded({ extended: true })
+
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
+// var data = JSON.parse('/user.json')
+
+// app.use(express.static(path.resolve(__dirname,'assets')));
+
+
+const readJson = fs.readFileSync('./user.json');
+let data = JSON.parse(readJson);
+
+app.get('/' , function (req, res) {
+    res.render("listing",{data:data});
+});
+// app.get('/user.json' , function (req, res) {
+//     res.render("listing",{data:data});
+// });
+app.get('/add' , function (req, res) {
+    res.render("addform",{uniqid:uniqid});
+});
+
+app.post('/add', urlencodedParser , function (req, res) {
+    const reqid = req.query;
+    const key = Object.keys(reqid)[0];
+    // const id = req.body.id;
+    // console.log(key);
+    const name = req.body.name;
+    const lastname = req.body.lastname;
+    const address = req.body.address;
+    const zipcode = req.body.zipcode;
+    const phone = req.body.phone;
+
+    data.data.push({ id: key , name:name , lastname:lastname , address:address , zipcode:zipcode,phone:phone });
+	fs.writeFileSync('./user.json', JSON.stringify(data, null, 4));
+
+    res.render("listing",{data:data});
+});
+
+app.get('/edit' , function (req, res) {
+    res.render("editfoem");
+})
+app.post('/editdata', urlencodedParser  , function (req, res) {
+    const reqid = req.query;
+    const key = Object.keys(reqid)[0];
+    // const id = req.body.id;
+    const name = req.body.name;
+    const lastname = req.body.lastname;
+    const address = req.body.address;
+    const zipcode = req.body.zipcode;
+    const phone = req.body.phone; 
+
+    data.data.forEach(item => {
+        if(item.id == key){
+            item.name = name;
+            item.lastname = lastname;
+            item.address = address;
+            item.zipcode = zipcode;
+            item.phone = phone;
+        }
+    });
+
+    res.render("listing",{data:data});
+})
+app.post('/edit' , function (req, res) {
+    const reqid = req.query; 
+    const key = Object.keys(reqid)[0];
+    // if(data.data.id === id){
+    //     console.log("abcd");
+    // }
+    // id1 = data.data.get({id:id});
+    // if (data.data.id == id){
+        
+    // }
+    for(var i=0; i<data.data.length; i++) {
+        if(data.data[i].id == key){
+            res.render("editfoem",{data:data.data[i]});
+        }
+    };
+    // var dataedit =  data.data[id];
+    // console.log(data);
+    // res.render("editfoem",{data:dataedit});
+});
+
+app.get('/delete' , function (req, res) {
+    // const reqid = req.query;
+    // const key = Object.keys(reqid)[0];
+    // for(var i=0; i<data.data.length; i++) {
+    //     if(data.data[i].id == key){
+    //         delete data.data[i];
+    //         console.log(data.data[i]);
+    //         // res.render("listing",{data:data});
+    //     }
+    // };
+    res.render("listing",{data:data});
+})
+
+app.post('/delete' , urlencodedParser , function (req, res) {
+    const reqid = req.query;
+    const key = Object.keys(reqid)[0];
+        for(var i=0; i<data.data.length; i++) {
+            if(data.data[i].id === key){
+                data.data.splice(i , 1);
+                fs.writeFileSync('./user.json', JSON.stringify(data,null,4));
+                res.render("listing",{data:data});
+                
+            }
+               
+            
+        }
+        
+})
+var server =  app.listen(8081,function(){
+    var host = server.address().address
+    var port = server.address().port
+    console.log(host , port)
+});
